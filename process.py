@@ -189,13 +189,13 @@ def check_db_storeddata():
             else:
                 try:
                     curs.execute(
-                        "UPDATE mapstore.gs_stored_data SET stored_data=%(jsonstr)s WHERE id=%(rid)d",
+                        "UPDATE mapstore.gs_stored_data SET stored_data=%(jsonstr)s WHERE id=%(rid)s",
                         {
                             "jsonstr": json.dumps(mapconfig, separators=(",", ":")),
                             "rid": rid,
                         },
                     )
-                    self.db.commit()
+                    db.commit()
                 except psycopg2.Error as e:
                     print(f"failed updating map {rid} ! {e}")
                 else:
@@ -228,13 +228,13 @@ def check_db_storeddata():
             else:
                 try:
                     curs.execute(
-                        "UPDATE mapstore.gs_stored_data SET stored_data=%(jsonstr)s WHERE id=%(rid)d",
+                        "UPDATE mapstore.gs_stored_data SET stored_data=%(jsonstr)s WHERE id=%(rid)s",
                         {
                             "jsonstr": json.dumps(mapconfig, separators=(",", ":")),
                             "rid": rid,
                         },
                     )
-                    self.db.commit()
+                    db.commit()
                 except psycopg2.Error as e:
                     print(f"failed updating context {rid} ! {e}")
                 else:
