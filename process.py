@@ -174,8 +174,11 @@ def check_db_storeddata():
         catalogs = mapconfig["catalogServices"]["services"]
         catalogs_modified = check_catalogs(catalogs, f"db map with id {rid} and name {name}", True)
         if map_modified or catalogs_modified:
-            # needs update in db
-            pass
+            if dryrun:
+                print(f"map {rid} needs update but not changing anything, dry-run mode");
+            else:
+                print(f"updating map {rid} ({name})");
+
     # list contexts
     curs.execute(
         "SELECT res.id, res.name, sd.stored_data FROM mapstore.gs_resource AS res "
@@ -192,8 +195,11 @@ def check_db_storeddata():
         catalogs = mapconfig["mapConfig"]["catalogServices"]["services"]
         catalogs_modified = check_catalogs(catalogs, f"db context with id {rid} and name {name}", True)
         if map_modified or catalogs_modified:
-            # needs update in db
-            pass
+            if dryrun:
+                print(f"context {rid} needs update but not changing anything, dry-run mode");
+            else:
+                print(f"updating context {rid} ({name})");
+
     db.close()
 
 
