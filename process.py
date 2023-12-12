@@ -124,7 +124,9 @@ def check_sources(sources, filename, canupdate):
         if s in layers_to_process.keys():
             lp = layers_to_process[s]
             if lp["action"] == "drop":
-                print(f"source with url '{s}' should be removed in {filename}, drop corresponding section")
+                print(
+                    f"source with url '{s}' should be removed in {filename}, drop corresponding section"
+                )
                 to_drop.append(s)
                 modified = True
             elif lp["action"] == "replace":
@@ -142,7 +144,9 @@ def check_sources(sources, filename, canupdate):
 def check_localConfig():
     with open("/etc/georchestra/mapstore/configs/localConfig.json") as file:
         localconfig = json.load(file)
-        catalogs = localconfig["initialState"]["defaultState"]["catalog"]["default"]["services"]
+        catalogs = localconfig["initialState"]["defaultState"]["catalog"]["default"][
+            "services"
+        ]
         check_catalogs(catalogs, "localConfig.json")
 
 
@@ -170,12 +174,16 @@ def check_db_storeddata():
         rid = record[0]
         name = record[1]
         mapconfig = json.loads(record[2])
-        map_modified = check_map(mapconfig, f"db map with id {rid} and name {name}", True)
+        map_modified = check_map(
+            mapconfig, f"db map with id {rid} and name {name}", True
+        )
         catalogs = mapconfig["catalogServices"]["services"]
-        catalogs_modified = check_catalogs(catalogs, f"db map with id {rid} and name {name}", True)
+        catalogs_modified = check_catalogs(
+            catalogs, f"db map with id {rid} and name {name}", True
+        )
         if map_modified or catalogs_modified:
             if dryrun:
-                print(f"map {rid} needs update but not changing anything, dry-run mode");
+                print(f"map {rid} needs update but not changing anything, dry-run mode")
             else:
                 try:
                     curs.execute(
@@ -189,7 +197,7 @@ def check_db_storeddata():
                 except psycopg2.Error as e:
                     print(f"failed updating map {rid} ! {e}")
                 else:
-                    print(f"updated map {rid} ({name})");
+                    print(f"updated map {rid} ({name})")
 
     # list contexts
     curs.execute(
@@ -203,12 +211,18 @@ def check_db_storeddata():
         rid = record[0]
         name = record[1]
         mapconfig = json.loads(record[2])
-        map_modified = check_map(mapconfig["mapConfig"], f"db context with id {rid} and name {name}", True)
+        map_modified = check_map(
+            mapconfig["mapConfig"], f"db context with id {rid} and name {name}", True
+        )
         catalogs = mapconfig["mapConfig"]["catalogServices"]["services"]
-        catalogs_modified = check_catalogs(catalogs, f"db context with id {rid} and name {name}", True)
+        catalogs_modified = check_catalogs(
+            catalogs, f"db context with id {rid} and name {name}", True
+        )
         if map_modified or catalogs_modified:
             if dryrun:
-                print(f"context {rid} needs update but not changing anything, dry-run mode");
+                print(
+                    f"context {rid} needs update but not changing anything, dry-run mode"
+                )
             else:
                 try:
                     curs.execute(
@@ -222,7 +236,7 @@ def check_db_storeddata():
                 except psycopg2.Error as e:
                     print(f"failed updating context {rid} ! {e}")
                 else:
-                    print(f"updated context {rid} ({name})");
+                    print(f"updated context {rid} ({name})")
 
     db.close()
 
