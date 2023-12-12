@@ -206,7 +206,7 @@ def check_localConfig():
         check_catalogs(catalogs, "localConfig.json")
 
 
-def check_map(string, mapname):
+def check_map(mapconfig, mapname):
     layers = mapconfig["map"]["layers"]
     layers_modified = check_layers(layers, mapname)
     sources = mapconfig["map"]["sources"]
