@@ -66,6 +66,9 @@ def check_catalogs(catalogs, filename, canupdate=False):
                 to_drop.append(f)
                 modified = True
             elif cp["action"] == "rename":
+                if cp["with"] in catalogs.keys():
+                    print(f"can't rename catalog {f} to " + cp["with"] + " as a catalog already exists with this key")
+                    continue
                 print(f"catalog {f} should be renamed to " + cp["with"] + f" in {filename}:")
                 to_rename[f] = cp["with"]
                 modified = True
