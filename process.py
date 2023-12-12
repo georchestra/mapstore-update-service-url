@@ -162,7 +162,8 @@ def check_map(string, mapname, canupdate=False):
 
 def check_db_storeddata():
     db = psycopg2.connect(get_db_url())
-    print(f"connected to {db}")
+    print(f"connected to {db.dsn}")
+    modified = False
     curs = db.cursor()
     # list maps
     curs.execute(
@@ -200,6 +201,7 @@ def check_db_storeddata():
                     print(f"failed updating map {rid} ! {e}")
                 else:
                     print(f"updated map {rid} ({name})")
+                    modified = True
 
     # list contexts
     curs.execute(
@@ -239,9 +241,11 @@ def check_db_storeddata():
                     print(f"failed updating context {rid} ! {e}")
                 else:
                     print(f"updated context {rid} ({name})")
+                    modified = True
 
     db.close()
-
+    if not modified:
+        print(f"nothing to update in the database !")
 
 # main
 dryrun = False
