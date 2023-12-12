@@ -53,6 +53,7 @@ def get_db_url():
 def check_catalogs(catalogs, filename, canupdate=False):
     modified = False
     to_drop = list()
+    to_rename = dict()
     for f in catalogs:
         if f in catalogs_to_process.keys():
             cp = catalogs_to_process[f]
@@ -62,6 +63,10 @@ def check_catalogs(catalogs, filename, canupdate=False):
                     f"catalog {f} should be removed in {filename}, drop the following section:\n{c}"
                 )
                 to_drop.append(f)
+                modified = True
+            elif cp["action"] == "rename":
+                print(f"catalog {f} should be renamed to " + cp["with"] + f" in {filename}:")
+                to_rename[f] = cp["with"]
                 modified = True
             elif cp["action"] == "replace":
                 if c["url"] == cp["by"]["url"] and ("title" not in cp["by"] or ("title" in cp["by"] and c["title"] == cp["by"]["title"])):
@@ -82,6 +87,8 @@ def check_catalogs(catalogs, filename, canupdate=False):
                 modified = True
     for c in to_drop:
         del catalogs[c]
+    for c in to_rename:
+        catalogs[to_rename[c]] = catalogs.pop(c)
     return modified
 
 
