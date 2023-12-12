@@ -13,6 +13,12 @@
 #   - for layers: .map.layers
 #   - for sources: .map.sources
 # technically, in a a context, .mapConfig is a map.
+# sql query for catalogs in a context:
+#    select id, json_object_keys(stored_data::json->'mapConfig'->'catalogServices'->'services')
+#    from mapstore.gs_stored_data where id in (select id from mapstore.gs_resource where category_id='8');
+# sql query for catalogs in a map:
+#    select id, json_object_keys(stored_data::json->'catalogServices'->'services')
+#    from mapstore.gs_stored_data where id in (select id from mapstore.gs_resource where category_id='1');
 # todo: dashoards -> iterate widgets, find map where widgetType == map
 
 import sys
