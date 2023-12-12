@@ -209,9 +209,12 @@ def check_localConfig():
 def check_map(mapconfig, mapname):
     layers = mapconfig["map"]["layers"]
     layers_modified = check_layers(layers, mapname)
-    sources = mapconfig["map"]["sources"]
-    sources_modified = check_sources(sources, mapname)
-    return layers_modified or sources_modified
+    if "sources" in mapconfig["map"]:
+        sources = mapconfig["map"]["sources"]
+        sources_modified = check_sources(sources, mapname)
+        return layers_modified or sources_modified
+    else:
+        return layers_modified
 
 
 def check_db_storeddata():
