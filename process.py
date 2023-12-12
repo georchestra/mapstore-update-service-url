@@ -177,7 +177,19 @@ def check_db_storeddata():
             if dryrun:
                 print(f"map {rid} needs update but not changing anything, dry-run mode");
             else:
-                print(f"updating map {rid} ({name})");
+                try:
+                    curs.execute(
+                        "UPDATE mapstore.gs_stored_data SET stored_data=%(jsonstr)s WHERE id=%(rid)d",
+                        {
+                            "jsonstr": json.dumps(mapconfig, separators=(",", ":")),
+                            "rid": rid,
+                        },
+                    )
+                    self.db.commit()
+                except psycopg2.Error as e:
+                    print(f"failed updating map {rid} ! {e}")
+                else:
+                    print(f"updated map {rid} ({name})");
 
     # list contexts
     curs.execute(
@@ -198,7 +210,19 @@ def check_db_storeddata():
             if dryrun:
                 print(f"context {rid} needs update but not changing anything, dry-run mode");
             else:
-                print(f"updating context {rid} ({name})");
+                try:
+                    curs.execute(
+                        "UPDATE mapstore.gs_stored_data SET stored_data=%(jsonstr)s WHERE id=%(rid)d",
+                        {
+                            "jsonstr": json.dumps(mapconfig, separators=(",", ":")),
+                            "rid": rid,
+                        },
+                    )
+                    self.db.commit()
+                except psycopg2.Error as e:
+                    print(f"failed updating context {rid} ! {e}")
+                else:
+                    print(f"updated context {rid} ({name})");
 
     db.close()
 
