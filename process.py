@@ -27,7 +27,7 @@ import psycopg2
 
 # for catalog entries
 catalogs_to_process = {
-    "sadre": { "action": "rename", "with": "sandre" },
+    "sadre": {"action": "rename", "with": "sandre"},
     "ignrasterwms": {
         "action": "replace",
         "by": {
@@ -54,13 +54,13 @@ catalogs_to_process = {
     "gpfbetawfs": {"action": "drop"},
     "gpfbetatms": {"action": "drop"},
     "gpfbetawmts": {"action": "drop"},
-    "igncartovectowms": { "action": "drop"},
-    "ignadministratifwms": { "action": "drop"},
-    "ignadressewms": { "action": "drop"},
-    "ignagriculturewms": { "action": "drop"},
-    "ignaltimetriewmts": { "action": "drop"},
-    "igndecouvertewmts": { "action": "drop"},
-    "ifremer": { "action": "drop"},
+    "igncartovectowms": {"action": "drop"},
+    "ignadministratifwms": {"action": "drop"},
+    "ignadressewms": {"action": "drop"},
+    "ignagriculturewms": {"action": "drop"},
+    "ignaltimetriewmts": {"action": "drop"},
+    "igndecouvertewmts": {"action": "drop"},
+    "ifremer": {"action": "drop"},
 }
 # for layers
 layers_to_process = {
@@ -86,6 +86,7 @@ def check_catalogs(catalogs, filename, canupdate=False):
     modified = False
     to_drop = list()
     to_rename = dict()
+    # print(f"list of catalogs in {filename}: " + str(catalogs.keys()))
     for f in catalogs:
         if f in catalogs_to_process.keys():
             cp = catalogs_to_process[f]
@@ -98,13 +99,24 @@ def check_catalogs(catalogs, filename, canupdate=False):
                 modified = True
             elif cp["action"] == "rename":
                 if cp["with"] in catalogs.keys():
-                    print(f"can't rename catalog {f} to " + cp["with"] + " as a catalog already exists with this key")
+                    print(
+                        f"can't rename catalog {f} to "
+                        + cp["with"]
+                        + " as a catalog already exists with this key"
+                    )
                     continue
-                print(f"catalog {f} should be renamed to " + cp["with"] + f" in {filename}:")
+                print(
+                    f"catalog {f} should be renamed to "
+                    + cp["with"]
+                    + f" in {filename}:"
+                )
                 to_rename[f] = cp["with"]
                 modified = True
             elif cp["action"] == "replace":
-                if c["url"] == cp["by"]["url"] and ("title" not in cp["by"] or ("title" in cp["by"] and c["title"] == cp["by"]["title"])):
+                if c["url"] == cp["by"]["url"] and (
+                    "title" not in cp["by"]
+                    or ("title" in cp["by"] and c["title"] == cp["by"]["title"])
+                ):
                     continue
                 print(f"catalog {f} should be updated in {filename}:")
                 if "title" in cp["by"]:
@@ -288,6 +300,7 @@ def check_db_storeddata():
     db.close()
     if not modified:
         print(f"nothing to update in the database !")
+
 
 # main
 dryrun = False
