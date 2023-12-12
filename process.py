@@ -35,7 +35,32 @@ catalogs_to_process = {
             "title": "Géoplateforme RASTER",
         },
     },
-    "igndecouvertewmts": {"action": "drop"},
+    "ignvectorwms": {
+        "action": "replace",
+        "by": {
+            "url": "https://data.geopf.fr/wms-v/wms",
+            "title": "Géoplateforme VECTOR",
+        },
+    },
+    "ignwmts": {
+        "action": "replace",
+        "by": {
+            "url": "https://data.geopf.fr/wmts",
+            "title": "Géoplateforme WMTS",
+        },
+    },
+    "gpfbetarasterwms": {"action": "drop"},
+    "gpfbetavectorwms": {"action": "drop"},
+    "gpfbetawfs": {"action": "drop"},
+    "gpfbetatms": {"action": "drop"},
+    "gpfbetawmts": {"action": "drop"},
+    "igncartovectowms": { "action": "drop"},
+    "ignadministratifwms": { "action": "drop"},
+    "ignadressewms": { "action": "drop"},
+    "ignagriculturewms": { "action": "drop"},
+    "ignaltimetriewmts": { "action": "drop"},
+    "igndecouvertewmts": { "action": "drop"},
+    "ifremer": { "action": "drop"},
 }
 # for layers
 layers_to_process = {
