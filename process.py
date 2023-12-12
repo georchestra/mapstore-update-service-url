@@ -21,6 +21,7 @@ import psycopg2
 
 # for catalog entries
 catalogs_to_process = {
+    "sadre": { "action": "rename", "with": "sandre" },
     "ignrasterwms": {
         "action": "replace",
         "by": {
