@@ -82,7 +82,7 @@ def get_db_url():
     return f"dbname={psqlconf['pgsqlDatabase']} user={psqlconf['pgsqlUser']} port={psqlconf['pgsqlPort']} host={psqlconf['pgsqlHost']} password={psqlconf['pgsqlPassword']}"
 
 
-def check_catalogs(catalogs, filename, canupdate=False):
+def check_catalogs(catalogs, filename):
     modified = False
     to_drop = list()
     to_rename = dict()
@@ -139,7 +139,7 @@ def check_catalogs(catalogs, filename, canupdate=False):
     return modified
 
 
-def check_layers(layers, filename, canupdate):
+def check_layers(layers, filename):
     modified = False
     to_drop = list()
     for l in layers:
@@ -172,7 +172,7 @@ def check_layers(layers, filename, canupdate):
     return modified
 
 
-def check_sources(sources, filename, canupdate):
+def check_sources(sources, filename):
     modified = False
     to_drop = list()
     to_replace = dict()
@@ -206,11 +206,11 @@ def check_localConfig():
         check_catalogs(catalogs, "localConfig.json")
 
 
-def check_map(string, mapname, canupdate=False):
+def check_map(string, mapname):
     layers = mapconfig["map"]["layers"]
-    layers_modified = check_layers(layers, mapname, canupdate)
+    layers_modified = check_layers(layers, mapname)
     sources = mapconfig["map"]["sources"]
-    sources_modified = check_sources(sources, mapname, canupdate)
+    sources_modified = check_sources(sources, mapname)
     return layers_modified or sources_modified
 
 
@@ -231,12 +231,10 @@ def check_db_storeddata():
         rid = record[0]
         name = record[1]
         mapconfig = json.loads(record[2])
-        map_modified = check_map(
-            mapconfig, f"db map with id {rid} and name {name}", True
-        )
+        map_modified = check_map(mapconfig, f"db map with id {rid} and name {name}")
         catalogs = mapconfig["catalogServices"]["services"]
         catalogs_modified = check_catalogs(
-            catalogs, f"db map with id {rid} and name {name}", True
+            catalogs, f"db map with id {rid} and name {name}"
         )
         if map_modified or catalogs_modified:
             if dryrun:
@@ -270,11 +268,11 @@ def check_db_storeddata():
         name = record[1]
         mapconfig = json.loads(record[2])
         map_modified = check_map(
-            mapconfig["mapConfig"], f"db context with id {rid} and name {name}", True
+            mapconfig["mapConfig"], f"db context with id {rid} and name {name}"
         )
         catalogs = mapconfig["mapConfig"]["catalogServices"]["services"]
         catalogs_modified = check_catalogs(
-            catalogs, f"db context with id {rid} and name {name}", True
+            catalogs, f"db context with id {rid} and name {name}"
         )
         if map_modified or catalogs_modified:
             if dryrun:
