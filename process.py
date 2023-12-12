@@ -64,6 +64,8 @@ def check_catalogs(catalogs, filename, canupdate=False):
                 to_drop.append(f)
                 modified = True
             elif cp["action"] == "replace":
+                if c["url"] == cp["by"]["url"] and ("title" not in cp["by"] or ("title" in cp["by"] and c["title"] == cp["by"]["title"])):
+                    continue
                 print(f"catalog {f} should be updated in {filename}:")
                 if "title" in cp["by"]:
                     print(
