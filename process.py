@@ -52,6 +52,7 @@ def get_db_url():
 
 def check_catalogs(catalogs, filename, canupdate=False):
     modified = False
+    to_drop = list()
     for f in catalogs:
         if f in catalogs_to_process.keys():
             cp = catalogs_to_process[f]
@@ -60,6 +61,8 @@ def check_catalogs(catalogs, filename, canupdate=False):
                 print(
                     f"{f} should be removed in {filename}, drop the following section:\n{c}"
                 )
+                to_drop.append(f)
+                modified = True
             elif cp["action"] == "replace":
                 print(f"{f} should be updated in {filename}:")
                 if "title" in cp["by"]:
@@ -70,13 +73,19 @@ def check_catalogs(catalogs, filename, canupdate=False):
                         + cp["by"]["title"]
                         + f"' in {c}"
                     )
+                    c["title"] = cp["by"]["title"]
                 else:
                     print("replace url by '" + cp["by"]["url"] + f"' in {c}")
+                c["url"] = cp["by"]["url"]
+                modified = True
+    for c in to_drop:
+        del catalogs[c]
     return modified
 
 
 def check_layers(layers, filename, canupdate):
     modified = False
+    to_drop = list()
     for l in layers:
         if "url" not in l:
             continue
@@ -87,6 +96,8 @@ def check_layers(layers, filename, canupdate):
                 print(
                     f"layer with url {lu} should be removed in {filename}, drop the following section:\n{l}"
                 )
+                to_drop.append(l)
+                modified = True
             elif lp["action"] == "replace":
                 print(f"layer with url {lu} should be updated in {filename}:")
                 print(
@@ -98,19 +109,33 @@ def check_layers(layers, filename, canupdate):
                     + l["name"]
                     + "'"
                 )
+                l["url"] = lp["by"]["url"]
+                modified = True
+    for l in to_drop:
+        layers.remove(l)
     return modified
 
 
 def check_sources(sources, filename, canupdate):
     modified = False
+    to_drop = list()
+    to_replace = dict()
     for s in sources.keys():
         if s in layers_to_process.keys():
             lp = layers_to_process[s]
             if lp["action"] == "drop":
                 print(f"source with url '{s}' should be removed in {filename}, drop corresponding section")
+                to_drop.append(s)
+                modified = True
             elif lp["action"] == "replace":
                 print(f"source with url '{s}' should be updated in {filename}:")
                 print(f"replace '{s}' by '" + lp["by"]["url"] + "'")
+                to_replace[s] = lp["by"]["url"]
+                modified = True
+    for s in to_drop:
+        del sources[s]
+    for s in to_replace:
+        sources[to_replace[s]] = sources.pop(s)
     return modified
 
 
