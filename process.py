@@ -59,12 +59,12 @@ def check_catalogs(catalogs, filename, canupdate=False):
             c = catalogs[f]
             if cp["action"] == "drop":
                 print(
-                    f"{f} should be removed in {filename}, drop the following section:\n{c}"
+                    f"catalog {f} should be removed in {filename}, drop the following section:\n{c}"
                 )
                 to_drop.append(f)
                 modified = True
             elif cp["action"] == "replace":
-                print(f"{f} should be updated in {filename}:")
+                print(f"catalog {f} should be updated in {filename}:")
                 if "title" in cp["by"]:
                     print(
                         "replace url by '"
