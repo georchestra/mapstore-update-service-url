@@ -50,7 +50,8 @@ def get_db_url():
     return f"dbname={psqlconf['pgsqlDatabase']} user={psqlconf['pgsqlUser']} port={psqlconf['pgsqlPort']} host={psqlconf['pgsqlHost']} password={psqlconf['pgsqlPassword']}"
 
 
-def check_catalogs(catalogs, filename):
+def check_catalogs(catalogs, filename, canupdate=False):
+    modified = False
     for f in catalogs:
         if f in catalogs_to_process.keys():
             cp = catalogs_to_process[f]
@@ -71,9 +72,11 @@ def check_catalogs(catalogs, filename):
                     )
                 else:
                     print("replace url by '" + cp["by"]["url"] + f"' in {c}")
+    return modified
 
 
-def check_layers(layers, filename):
+def check_layers(layers, filename, canupdate):
+    modified = False
     for l in layers:
         if "url" not in l:
             continue
@@ -95,9 +98,11 @@ def check_layers(layers, filename):
                     + l["name"]
                     + "'"
                 )
+    return modified
 
 
-def check_sources(sources, filename):
+def check_sources(sources, filename, canupdate):
+    modified = False
     for s in sources.keys():
         if s in layers_to_process.keys():
             lp = layers_to_process[s]
@@ -106,6 +111,7 @@ def check_sources(sources, filename):
             elif lp["action"] == "replace":
                 print(f"source with url '{s}' should be updated in {filename}:")
                 print(f"replace '{s}' by '" + lp["by"]["url"] + "'")
+    return modified
 
 
 def check_localConfig():
@@ -115,11 +121,12 @@ def check_localConfig():
         check_catalogs(catalogs, "localConfig.json")
 
 
-def check_map(string, mapname):
+def check_map(string, mapname, canupdate=False):
     layers = mapconfig["map"]["layers"]
-    check_layers(layers, mapname)
+    layers_modified = check_layers(layers, mapname, canupdate)
     sources = mapconfig["map"]["sources"]
-    check_sources(sources, mapname)
+    sources_modified = check_sources(sources, mapname, canupdate)
+    return layers_modified or sources_modified
 
 
 def check_db_storeddata():
@@ -138,9 +145,12 @@ def check_db_storeddata():
         rid = record[0]
         name = record[1]
         mapconfig = json.loads(record[2])
-        check_map(mapconfig, f"db map with id {rid} and name {name}")
+        map_modified = check_map(mapconfig, f"db map with id {rid} and name {name}", True)
         catalogs = mapconfig["catalogServices"]["services"]
-        check_catalogs(catalogs, f"db map with id {rid} and name {name}")
+        catalogs_modified = check_catalogs(catalogs, f"db map with id {rid} and name {name}", True)
+        if map_modified or catalogs_modified:
+            # needs update in db
+            pass
     # list contexts
     curs.execute(
         "SELECT res.id, res.name, sd.stored_data FROM mapstore.gs_resource AS res "
@@ -153,9 +163,12 @@ def check_db_storeddata():
         rid = record[0]
         name = record[1]
         mapconfig = json.loads(record[2])
-        check_map(mapconfig["mapConfig"], f"db context with id {rid} and name {name}")
+        map_modified = check_map(mapconfig["mapConfig"], f"db context with id {rid} and name {name}", True)
         catalogs = mapconfig["mapConfig"]["catalogServices"]["services"]
-        check_catalogs(catalogs, f"db context with id {rid} and name {name}")
+        catalogs_modified = check_catalogs(catalogs, f"db context with id {rid} and name {name}", True)
+        if map_modified or catalogs_modified:
+            # needs update in db
+            pass
     db.close()
 
 
