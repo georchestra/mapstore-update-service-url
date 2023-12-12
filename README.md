@@ -38,3 +38,28 @@ map.
 
 the script accepts the `-d` argument in which case it wont modify anything, but
 will tell you what it has found needing modifications.
+
+## example
+
+in the below example, a previous run already cleaned up all the entries in the
+database, but there are still entries to remove in `localConfig.json` - the
+script won't change those but will warn as long as they're here !
+```
+landry@build.fluela:~/scratch/mapstore-update-service-url $python3 process.py
+catalog ignvectorwms should be updated in localConfig.json:
+replace url by 'https://data.geopf.fr/wms-v/wms' and title by 'Géoplateforme VECTOR' in {'url': 'https://wxs.ign.fr/essentiels/geoportail/v/wms', 'type': 'wms', 'title': 'IGN essentiels VECTOR', 'autoload': True}
+catalog igncartovectowms should be removed in localConfig.json, drop the following section:
+{'url': 'https://wxs.ign.fr/cartovecto/geoportail/v/wms', 'type': 'wms', 'title': 'IGN carto vectorielle', 'autoload': True}
+catalog ignadministratifwms should be removed in localConfig.json, drop the following section:
+{'url': 'https://wxs.ign.fr/administratif/geoportail/r/wms', 'type': 'wms', 'title': 'IGN administratif', 'autoload': True}
+catalog ignadressewms should be removed in localConfig.json, drop the following section:
+{'url': 'https://wxs.ign.fr/adresse/geoportail/v/wms', 'type': 'wms', 'title': 'IGN adresse', 'autoload': True}
+catalog ignagriculturewms should be removed in localConfig.json, drop the following section:
+{'url': 'https://wxs.ign.fr/agriculture/geoportail/r/wms', 'type': 'wms', 'title': 'IGN agriculture', 'autoload': True}
+catalog ignaltimetriewmts should be removed in localConfig.json, drop the following section:
+{'url': 'https://wxs.ign.fr/altimetrie/geoportail/wmts', 'type': 'wmts', 'title': 'IGN altimetrie WMTS', 'autoload': True}
+catalog ifremer should be removed in localConfig.json, drop the following section:
+{'NOTE': 'NOT WORKING, requires login. This is configured on the current viewer but do not provide any response', 'url': 'http://www.ifremer.fr/geonetwork/srv/fre/csw', 'type': 'csw', 'title': "le catalogue de l'Ifremer", 'autoload': True}
+connected to user=georchestra password=xxx dbname=georchestra host=localhost port=5432
+nothing to update in the database !
+```
