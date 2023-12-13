@@ -215,7 +215,9 @@ def check_db_storeddata():
         except TypeError:
             print(f"map {rid} ({name}) has no content ?")
             continue
-        map_modified = check_map(mapconfig, f"db map with id {rid} and name {name}", True)
+        map_modified = check_map(
+            mapconfig, f"db map with id {rid} and name {name}", True
+        )
         catalogs = mapconfig["catalogServices"]["services"]
         catalogs_modified = check_catalogs(
             catalogs, f"db map with id {rid} and name {name}", True
