@@ -1,0 +1,80 @@
+{
+   "catalogs_to_process" : {
+      "gpfbetarasterwms" : {
+         "action" : "drop"
+      },
+      "gpfbetatms" : {
+         "action" : "drop"
+      },
+      "gpfbetavectorwms" : {
+         "action" : "drop"
+      },
+      "gpfbetawfs" : {
+         "action" : "drop"
+      },
+      "gpfbetawmts" : {
+         "action" : "drop"
+      },
+      "ifremer" : {
+         "action" : "drop"
+      },
+      "ignadministratifwms" : {
+         "action" : "drop"
+      },
+      "ignadressewms" : {
+         "action" : "drop"
+      },
+      "ignagriculturewms" : {
+         "action" : "drop"
+      },
+      "ignaltimetriewmts" : {
+         "action" : "drop"
+      },
+      "igncartovectowms" : {
+         "action" : "drop"
+      },
+      "igndecouvertewmts" : {
+         "action" : "drop"
+      },
+      "ignrasterwms" : {
+         "action" : "replace",
+         "by" : {
+            "title" : "Géoplateforme RASTER",
+            "url" : "https://data.geopf.fr/wms-r/wms"
+         }
+      },
+      "ignvectorwms" : {
+         "action" : "replace",
+         "by" : {
+            "title" : "Géoplateforme VECTOR",
+            "url" : "https://data.geopf.fr/wms-v/wms"
+         }
+      },
+      "ignwmts" : {
+         "action" : "replace",
+         "by" : {
+            "title" : "Géoplateforme WMTS",
+            "url" : "https://data.geopf.fr/wmts"
+         }
+      },
+      "sadre" : {
+         "action" : "rename",
+         "with" : "sandre"
+      }
+   },
+   "layers_to_process" : {
+      "https://data.geopf.fr/wmts" : {
+         "action" : "drop",
+         "layername" : "ludi_2266__joincache_pyramide_2"
+      },
+      "https://wxs.ign.fr/decouverte/geoportail/wmts" : {
+         "action" : "drop"
+      },
+      "https://wxs.ign.fr/essentiels/geoportail/wmts" : {
+         "action" : "replace",
+         "by" : {
+            "url" : "https://data.geopf.fr/wmts"
+         }
+      }
+   }
+}
