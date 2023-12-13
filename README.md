@@ -6,6 +6,46 @@ such as the french geoplateforme migration, cf
 https://geoservices.ign.fr/bascule-vers-la-geoplateforme
 
 it can also remove no longer available services from all maps.
+
+the following operations are available:
+- for a given catalog entry, replace its url (and eventually title)
+```
+"ignwmts" : {
+  "action" : "replace",
+  "by" : {
+    "title" : "Géoplateforme WMTS",
+    "url" : "https://data.geopf.fr/wmts"
+  }
+}
+```
+- drop a given catalog entry by its name
+```
+"gpfbetarasterwms" : { "action" : "drop" }
+```
+- rename a catalog entry (hidden to the user)
+```
+"sadre" : { "action" : "rename", "with": "sandre" }
+```
+- for layers in a map from a given service url, replace the url
+```
+"https://wxs.ign.fr/essentiels/geoportail/wmts" : {
+  "action" : "replace",
+  "by" : {
+    "url" : "https://data.geopf.fr/wmts"
+  }
+}
+```
+- drop all layers coming from a given service url
+```
+"https://wxs.ign.fr/decouverte/geoportail/wmts" : { "action" : "drop" }
+```
+- drop a specific layer coming from a given service url, specifying its name
+```
+"https://data.geopf.fr/wmts" : {
+  "action" : "drop",
+  "layername" : "ludi_2266__joincache_pyramide_2"
+}
+```
 ## configuration
 
 the script needs a list of service definitions mappings, from a previous url to
