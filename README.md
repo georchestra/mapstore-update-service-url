@@ -9,18 +9,9 @@ it can also remove no longer available services from all maps.
 ## configuration
 
 the script needs a list of service definitions mappings, from a previous url to
-a new url, or to nothing if the service is removed.  currently it is hardcoded
-in the script, and should look like this:
-```
-# for catalog entries
-catalogs_to_process = {
-    "ignrasterwms": { "action": "replace", "by": {"url": "https://data.geopf.fr/wms-r/wms", "title": "Géoplateforme RASTER"}},
-    "igndecouvertewmts": { "action": "drop" }}
-# for layers & sources
-layers_to_process = {
-    "https://wxs.ign.fr/essentiels/geoportail/wmts": {"action": "replace", "by": { "url": "https://data.geopf.fr/wmts" }},
-    "https://wxs.ign.fr/decouverte/geoportail/wmts": {"action": "drop" }}
-```
+a new url, or to nothing if the service/layer is to be removed. the
+configuration is stored in a json file, and [an example](config.example.json)
+is provided.
 
 it will process (but only warn !) the following files:
 - `/etc/georchestra/mapstore/configs/localConfig.json`
