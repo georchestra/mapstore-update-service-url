@@ -244,7 +244,11 @@ def check_db_storeddata():
     for record in records:
         rid = record[0]
         name = record[1]
-        mapconfig = json.loads(record[2])
+        try:
+            mapconfig = json.loads(record[2])
+        except TypeError:
+            print(f"map {rid} ({name}) has no content ?")
+            continue
         map_modified = check_map(mapconfig, f"db map with id {rid} and name {name}")
         catalogs = mapconfig["catalogServices"]["services"]
         catalogs_modified = check_catalogs(
@@ -288,7 +292,11 @@ def check_db_storeddata():
     for record in records:
         rid = record[0]
         name = record[1]
-        mapconfig = json.loads(record[2])
+        try:
+            mapconfig = json.loads(record[2])
+        except TypeError:
+            print(f"context {rid} ({name}) has no content ?")
+            continue
         map_modified = check_map(
             mapconfig["mapConfig"], f"db context with id {rid} and name {name}"
         )
