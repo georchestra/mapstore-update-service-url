@@ -53,9 +53,10 @@ def check_catalogs(catalogs, filename):
             cp = config["catalogs_to_process"][f]
             c = catalogs[f]
             if cp["action"] == "drop":
-                print(
-                    f"catalog {f} should be removed in {filename}, drop the following section:\n{c}"
-                )
+                if args.dryrun:
+                    print(
+                        f'catalog {f} should be removed in {filename}, drop the following section: "{c}"'
+                    )
                 to_drop.append(f)
                 modified = True
             elif cp["action"] == "rename":
@@ -66,11 +67,12 @@ def check_catalogs(catalogs, filename):
                         + " as a catalog already exists with this key"
                     )
                     continue
-                print(
-                    f"catalog {f} should be renamed to "
-                    + cp["with"]
-                    + f" in {filename}:"
-                )
+                if args.dryrun:
+                    print(
+                        f"catalog {f} should be renamed to "
+                        + cp["with"]
+                        + f" in {filename}:"
+                    )
                 to_rename[f] = cp["with"]
                 modified = True
             elif cp["action"] == "replace":
@@ -79,10 +81,10 @@ def check_catalogs(catalogs, filename):
                     or ("title" in cp["by"] and c["title"] == cp["by"]["title"])
                 ):
                     continue
-                print(f"catalog {f} should be updated in {filename}:")
+                msg = f"catalog {f} should be updated in {filename}:"
                 if "title" in cp["by"]:
-                    print(
-                        "replace url by '"
+                    msg += (
+                        " replace url by '"
                         + cp["by"]["url"]
                         + "' and title by '"
                         + cp["by"]["title"]
@@ -90,7 +92,9 @@ def check_catalogs(catalogs, filename):
                     )
                     c["title"] = cp["by"]["title"]
                 else:
-                    print("replace url by '" + cp["by"]["url"] + f"' in {c}")
+                    msg += "replace url by '" + cp["by"]["url"] + f"' in {c}"
+                if args.dryrun:
+                    print(msg)
                 c["url"] = cp["by"]["url"]
                 modified = True
     for c in to_drop:
@@ -113,24 +117,26 @@ def check_layers(layers, filename):
             if lp["action"] == "drop":
                 if "layername" in lp and lp["layername"] != l["name"]:
                     continue
-                print(
-                    f"layer with url {lu} and name "
-                    + l["name"]
-                    + f" should be removed in {filename}, drop the following section:\n{l}"
-                )
+                if args.dryrun:
+                    print(
+                        f"layer with url {lu} and name "
+                        + l["name"]
+                        + f" should be removed in {filename}, drop the following section:\n{l}"
+                    )
                 to_drop.append(l)
                 modified = True
             elif lp["action"] == "replace":
-                print(f"layer with url {lu} should be updated in {filename}:")
-                print(
-                    "replace url by '"
-                    + lp["by"]["url"]
-                    + "' in the layer with title '"
-                    + l["title"]
-                    + "' and name '"
-                    + l["name"]
-                    + "'"
-                )
+                if args.dryrun:
+                    print(
+                        f"layer with url {lu} should be updated in {filename}: "
+                        + "replace url by '"
+                        + lp["by"]["url"]
+                        + "' in the layer with title '"
+                        + l["title"]
+                        + "' and name '"
+                        + l["name"]
+                        + "'"
+                    )
                 l["url"] = lp["by"]["url"]
                 modified = True
     for l in to_drop:
@@ -149,14 +155,16 @@ def check_sources(sources, filename):
                 if "layername" in lp:
                     # not dropping source, as we don't know if several layers might use it
                     continue
-                print(
-                    f"source with url '{s}' should be removed in {filename}, drop corresponding section"
-                )
+                if args.dryrun:
+                    print(
+                        f"source with url '{s}' should be removed in {filename}, drop corresponding section"
+                    )
                 to_drop.append(s)
                 modified = True
             elif lp["action"] == "replace":
-                print(f"source with url '{s}' should be updated in {filename}:")
-                print(f"replace '{s}' by '" + lp["by"]["url"] + "'")
+                if args.dryrun:
+                    print(f"source with url '{s}' should be updated in {filename}:")
+                    print(f"replace '{s}' by '" + lp["by"]["url"] + "'")
                 to_replace[s] = lp["by"]["url"]
                 modified = True
     for s in to_drop:
