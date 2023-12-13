@@ -302,8 +302,9 @@ parser = argparse.ArgumentParser(
     description="Process mapstore configs, maps & contexts."
 )
 parser.add_argument("-d", "--dry-run", action="store_true", help="dry-run mode")
+parser.add_argument("-c", "--config", help="json configuration file")
 args = parser.parse_args()
-config = read_config()
+config = read_config(args.config)
 check_localConfig()
 for filetype in ["new", "config"]:
     with open(f"/etc/georchestra/mapstore/configs/{filetype}.json") as file:
