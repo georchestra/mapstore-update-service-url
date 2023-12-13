@@ -25,10 +25,12 @@ import sys
 import json
 import psycopg2
 
-def read_config(name='config.json'):
+
+def read_config(name="config.json"):
     print(f"reading config from {name}")
     with open(name) as f:
         return json.load(f)
+
 
 def get_db_url():
     with open("/etc/georchestra/default.properties") as myfile:
@@ -104,7 +106,7 @@ def check_layers(layers, filename):
         if "url" not in l:
             continue
         lu = l["url"]
-        #print(lu, l["name"])
+        # print(lu, l["name"])
         if lu in config["layers_to_process"].keys():
             lp = config["layers_to_process"][lu]
             if lp["action"] == "drop":
