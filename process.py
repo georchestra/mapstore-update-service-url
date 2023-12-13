@@ -185,10 +185,10 @@ def check_localConfig():
 
 def check_map(mapconfig, mapname, canupdate=False):
     layers = mapconfig["map"]["layers"]
-    layers_modified = check_layers(layers, mapname)
+    layers_modified = check_layers(layers, mapname, canupdate)
     if "sources" in mapconfig["map"]:
         sources = mapconfig["map"]["sources"]
-        sources_modified = check_sources(sources, mapname)
+        sources_modified = check_sources(sources, mapname, canupdate)
         return layers_modified or sources_modified
     else:
         return layers_modified
