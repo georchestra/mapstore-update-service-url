@@ -302,7 +302,7 @@ parser = argparse.ArgumentParser(
     description="Process mapstore configs, maps & contexts."
 )
 parser.add_argument("-d", "--dry-run", action="store_true", help="dry-run mode")
-parser.add_argument("-c", "--config", help="json configuration file")
+parser.add_argument("-c", "--config", help="json configuration file (defaults to config.json)")
 args = parser.parse_args()
 config = read_config(args.config)
 check_localConfig()
