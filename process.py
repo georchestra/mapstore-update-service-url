@@ -53,7 +53,7 @@ def check_catalogs(catalogs, filename, canupdate=False):
             cp = config["catalogs_to_process"][f]
             c = catalogs[f]
             if cp["action"] == "drop":
-                if args.dryrun:
+                if args.dryrun or not canupdate:
                     print(
                         f'catalog {f} should be removed in {filename}, drop the following section: "{c}"'
                     )
@@ -67,7 +67,7 @@ def check_catalogs(catalogs, filename, canupdate=False):
                         + " as a catalog already exists with this key"
                     )
                     continue
-                if args.dryrun:
+                if args.dryrun or not canupdate:
                     print(
                         f"catalog {f} should be renamed to "
                         + cp["with"]
@@ -93,7 +93,7 @@ def check_catalogs(catalogs, filename, canupdate=False):
                     c["title"] = cp["by"]["title"]
                 else:
                     msg += "replace url by '" + cp["by"]["url"] + f"' in {c}"
-                if args.dryrun:
+                if args.dryrun or not canupdate:
                     print(msg)
                 c["url"] = cp["by"]["url"]
                 modified = True
@@ -117,7 +117,7 @@ def check_layers(layers, filename, canupdate):
             if lp["action"] == "drop":
                 if "layername" in lp and lp["layername"] != l["name"]:
                     continue
-                if args.dryrun:
+                if args.dryrun or not canupdate:
                     print(
                         f"layer with url {lu} and name "
                         + l["name"]
@@ -126,7 +126,7 @@ def check_layers(layers, filename, canupdate):
                 to_drop.append(l)
                 modified = True
             elif lp["action"] == "replace":
-                if args.dryrun:
+                if args.dryrun or not canupdate:
                     print(
                         f"layer with url {lu} should be updated in {filename}: "
                         + "replace url by '"
@@ -155,14 +155,14 @@ def check_sources(sources, filename, canupdate):
                 if "layername" in lp:
                     # not dropping source, as we don't know if several layers might use it
                     continue
-                if args.dryrun:
+                if args.dryrun or not canupdate:
                     print(
                         f"source with url '{s}' should be removed in {filename}, drop corresponding section"
                     )
                 to_drop.append(s)
                 modified = True
             elif lp["action"] == "replace":
-                if args.dryrun:
+                if args.dryrun or not canupdate:
                     print(f"source with url '{s}' should be updated in {filename}:")
                     print(f"replace '{s}' by '" + lp["by"]["url"] + "'")
                 to_replace[s] = lp["by"]["url"]
