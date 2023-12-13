@@ -61,5 +61,39 @@ catalog ignaltimetriewmts should be removed in localConfig.json, drop the follow
 catalog ifremer should be removed in localConfig.json, drop the following section:
 {'NOTE': 'NOT WORKING, requires login. This is configured on the current viewer but do not provide any response', 'url': 'http://www.ifremer.fr/geonetwork/srv/fre/csw', 'type': 'csw', 'title': "le catalogue de l'Ifremer", 'autoload': True}
 connected to user=georchestra password=xxx dbname=georchestra host=localhost port=5432
+nothing to fix in map 19 (test2)
+nothing to fix in map 150 (test pane)
+nothing to fix in map 66 (ortho)
+nothing to fix in map 85 (Test Carte avec widgets)
+nothing to fix in map 106 (xx)
+nothing to fix in map 100 (test)
+nothing to fix in map 34 (travaux)
+nothing to fix in map 58 (mauzun orthohisto)
+nothing to fix in context 156 (public_print)
+nothing to fix in context 1 (test_theme)
+nothing to fix in context 82 (test_widget)
+nothing to fix in context 117 (aaaaaaa)
+nothing to fix in context 93 (all_plugins)
+nothing to fix in context 120 (blu)
+nothing to update in the database !
+```
+and once everything is clean:
+```
+landry@build.fluela:~/scratch/mapstore-update-service-url $python3 process.py
+connected to user=georchestra password=xxx dbname=georchestra host=localhost port=5432
+nothing to fix in map 19 (test2)
+nothing to fix in map 150 (test pane)
+nothing to fix in map 66 (ortho)
+nothing to fix in map 85 (Test Carte avec widgets)
+nothing to fix in map 106 (xx)
+nothing to fix in map 100 (test)
+nothing to fix in map 34 (travaux)
+nothing to fix in map 58 (mauzun orthohisto)
+nothing to fix in context 156 (public_print)
+nothing to fix in context 1 (test_theme)
+nothing to fix in context 82 (test_widget)
+nothing to fix in context 117 (aaaaaaa)
+nothing to fix in context 93 (all_plugins)
+nothing to fix in context 120 (blu)
 nothing to update in the database !
 ```
