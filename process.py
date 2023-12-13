@@ -69,6 +69,10 @@ layers_to_process = {
         "by": {"url": "https://data.geopf.fr/wmts"},
     },
     "https://wxs.ign.fr/decouverte/geoportail/wmts": {"action": "drop"},
+    "https://data.geopf.fr/wmts": {
+        "layername": "ludi_2266__joincache_pyramide_2",
+        "action": "drop",
+    },
 }
 
 
@@ -149,8 +153,12 @@ def check_layers(layers, filename):
         if lu in layers_to_process.keys():
             lp = layers_to_process[lu]
             if lp["action"] == "drop":
+                if "layername" in lp and lp["layername"] != l["name"]:
+                    continue
                 print(
-                    f"layer with url {lu} should be removed in {filename}, drop the following section:\n{l}"
+                    f"layer with url {lu} and name "
+                    + l["name"]
+                    + f" should be removed in {filename}, drop the following section:\n{l}"
                 )
                 to_drop.append(l)
                 modified = True
@@ -180,6 +188,9 @@ def check_sources(sources, filename):
         if s in layers_to_process.keys():
             lp = layers_to_process[s]
             if lp["action"] == "drop":
+                if "layername" in lp:
+                    # not dropping source, as we don't know if several layers might use it
+                    continue
                 print(
                     f"source with url '{s}' should be removed in {filename}, drop corresponding section"
                 )
