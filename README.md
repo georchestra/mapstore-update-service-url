@@ -27,8 +27,19 @@ map.
 
 ## usage
 
-the script accepts the `-d` argument in which case it wont modify anything, but
-will tell you what it has found needing modifications.
+```
+usage: process.py [-h] [-d] [-c CONFIG]
+
+Process mapstore configs, maps & contexts.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -d, --dry-run         dry-run mode
+  -c CONFIG, --config CONFIG
+                        json configuration file (defaults to config.json)
+```
+if using `-d` the script wont modify anything, but will tell you what it has
+found needing modifications.
 
 ## example
 
