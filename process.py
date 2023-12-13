@@ -25,56 +25,10 @@ import sys
 import json
 import psycopg2
 
-# for catalog entries
-catalogs_to_process = {
-    "sadre": {"action": "rename", "with": "sandre"},
-    "ignrasterwms": {
-        "action": "replace",
-        "by": {
-            "url": "https://data.geopf.fr/wms-r/wms",
-            "title": "Géoplateforme RASTER",
-        },
-    },
-    "ignvectorwms": {
-        "action": "replace",
-        "by": {
-            "url": "https://data.geopf.fr/wms-v/wms",
-            "title": "Géoplateforme VECTOR",
-        },
-    },
-    "ignwmts": {
-        "action": "replace",
-        "by": {
-            "url": "https://data.geopf.fr/wmts",
-            "title": "Géoplateforme WMTS",
-        },
-    },
-    "gpfbetarasterwms": {"action": "drop"},
-    "gpfbetavectorwms": {"action": "drop"},
-    "gpfbetawfs": {"action": "drop"},
-    "gpfbetatms": {"action": "drop"},
-    "gpfbetawmts": {"action": "drop"},
-    "igncartovectowms": {"action": "drop"},
-    "ignadministratifwms": {"action": "drop"},
-    "ignadressewms": {"action": "drop"},
-    "ignagriculturewms": {"action": "drop"},
-    "ignaltimetriewmts": {"action": "drop"},
-    "igndecouvertewmts": {"action": "drop"},
-    "ifremer": {"action": "drop"},
-}
-# for layers
-layers_to_process = {
-    "https://wxs.ign.fr/essentiels/geoportail/wmts": {
-        "action": "replace",
-        "by": {"url": "https://data.geopf.fr/wmts"},
-    },
-    "https://wxs.ign.fr/decouverte/geoportail/wmts": {"action": "drop"},
-    "https://data.geopf.fr/wmts": {
-        "layername": "ludi_2266__joincache_pyramide_2",
-        "action": "drop",
-    },
-}
-
+def read_config(name='config.json'):
+    print(f"reading config from {name}")
+    with open(name) as f:
+        return json.load(f)
 
 def get_db_url():
     with open("/etc/georchestra/default.properties") as myfile:
@@ -92,8 +46,8 @@ def check_catalogs(catalogs, filename):
     to_rename = dict()
     # print(f"list of catalogs in {filename}: " + str(catalogs.keys()))
     for f in catalogs:
-        if f in catalogs_to_process.keys():
-            cp = catalogs_to_process[f]
+        if f in config["catalogs_to_process"].keys():
+            cp = config["catalogs_to_process"][f]
             c = catalogs[f]
             if cp["action"] == "drop":
                 print(
@@ -150,8 +104,9 @@ def check_layers(layers, filename):
         if "url" not in l:
             continue
         lu = l["url"]
-        if lu in layers_to_process.keys():
-            lp = layers_to_process[lu]
+        #print(lu, l["name"])
+        if lu in config["layers_to_process"].keys():
+            lp = config["layers_to_process"][lu]
             if lp["action"] == "drop":
                 if "layername" in lp and lp["layername"] != l["name"]:
                     continue
@@ -185,8 +140,8 @@ def check_sources(sources, filename):
     to_drop = list()
     to_replace = dict()
     for s in sources.keys():
-        if s in layers_to_process.keys():
-            lp = layers_to_process[s]
+        if s in config["layers_to_process"].keys():
+            lp = config["layers_to_process"][s]
             if lp["action"] == "drop":
                 if "layername" in lp:
                     # not dropping source, as we don't know if several layers might use it
@@ -343,6 +298,7 @@ dryrun = False
 if len(sys.argv) > 1 and sys.argv[1] == "-d":
     dryrun = True
 
+config = read_config()
 check_localConfig()
 for filetype in ["new", "config"]:
     with open(f"/etc/georchestra/mapstore/configs/{filetype}.json") as file:
