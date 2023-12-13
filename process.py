@@ -43,7 +43,7 @@ def get_db_url():
     return f"dbname={psqlconf['pgsqlDatabase']} user={psqlconf['pgsqlUser']} port={psqlconf['pgsqlPort']} host={psqlconf['pgsqlHost']} password={psqlconf['pgsqlPassword']}"
 
 
-def check_catalogs(catalogs, filename):
+def check_catalogs(catalogs, filename, canupdate=False):
     modified = False
     to_drop = list()
     to_rename = dict()
@@ -104,7 +104,7 @@ def check_catalogs(catalogs, filename):
     return modified
 
 
-def check_layers(layers, filename):
+def check_layers(layers, filename, canupdate):
     modified = False
     to_drop = list()
     for l in layers:
@@ -144,7 +144,7 @@ def check_layers(layers, filename):
     return modified
 
 
-def check_sources(sources, filename):
+def check_sources(sources, filename, canupdate):
     modified = False
     to_drop = list()
     to_replace = dict()
@@ -183,7 +183,7 @@ def check_localConfig():
         check_catalogs(catalogs, "localConfig.json")
 
 
-def check_map(mapconfig, mapname):
+def check_map(mapconfig, mapname, canupdate=False):
     layers = mapconfig["map"]["layers"]
     layers_modified = check_layers(layers, mapname)
     if "sources" in mapconfig["map"]:
@@ -215,10 +215,10 @@ def check_db_storeddata():
         except TypeError:
             print(f"map {rid} ({name}) has no content ?")
             continue
-        map_modified = check_map(mapconfig, f"db map with id {rid} and name {name}")
+        map_modified = check_map(mapconfig, f"db map with id {rid} and name {name}", True)
         catalogs = mapconfig["catalogServices"]["services"]
         catalogs_modified = check_catalogs(
-            catalogs, f"db map with id {rid} and name {name}"
+            catalogs, f"db map with id {rid} and name {name}", True
         )
         if map_modified or catalogs_modified:
             if args.dryrun:
@@ -264,11 +264,11 @@ def check_db_storeddata():
             print(f"context {rid} ({name}) has no content ?")
             continue
         map_modified = check_map(
-            mapconfig["mapConfig"], f"db context with id {rid} and name {name}"
+            mapconfig["mapConfig"], f"db context with id {rid} and name {name}", True
         )
         catalogs = mapconfig["mapConfig"]["catalogServices"]["services"]
         catalogs_modified = check_catalogs(
-            catalogs, f"db context with id {rid} and name {name}"
+            catalogs, f"db context with id {rid} and name {name}", True
         )
         if map_modified or catalogs_modified:
             if args.dryrun:
