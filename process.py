@@ -274,6 +274,8 @@ def check_db_storeddata():
                 else:
                     print(f"updated map {rid} ({name})")
                     modified = True
+        else:
+            print(f"nothing to fix in map {rid} ({name})")
 
     # list contexts
     curs.execute(
@@ -320,6 +322,8 @@ def check_db_storeddata():
                 else:
                     print(f"updated context {rid} ({name})")
                     modified = True
+        else:
+            print(f"nothing to fix in context {rid} ({name})")
 
     db.close()
     if not modified:
