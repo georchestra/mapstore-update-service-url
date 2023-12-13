@@ -207,7 +207,7 @@ def check_db_storeddata():
         "SELECT res.id,res.name,sd.stored_data FROM mapstore.gs_resource AS res "
         "LEFT JOIN mapstore.gs_stored_data AS sd ON sd.id=res.id "
         "LEFT JOIN mapstore.gs_category AS cat ON cat.id=res.category_id "
-        "WHERE cat.name='MAP'"
+        "WHERE cat.name in ('MAP','TEMPLATE')"
     )
     records = curs.fetchall()
     for record in records:
