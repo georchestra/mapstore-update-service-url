@@ -92,7 +92,7 @@ def check_catalogs(catalogs, filename, canupdate=False):
                     )
                     c["title"] = cp["by"]["title"]
                 else:
-                    msg += "replace url by '" + cp["by"]["url"] + f"' in {c}"
+                    msg += " replace url by '" + cp["by"]["url"] + f"' in {c}"
                 if args.dryrun or not canupdate:
                     print(msg)
                 c["url"] = cp["by"]["url"]
