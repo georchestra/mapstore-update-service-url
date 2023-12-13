@@ -163,8 +163,11 @@ def check_sources(sources, filename, canupdate):
                 modified = True
             elif lp["action"] == "replace":
                 if args.dryrun or not canupdate:
-                    print(f"source with url '{s}' should be updated in {filename}:")
-                    print(f"replace '{s}' by '" + lp["by"]["url"] + "'")
+                    print(
+                        f"source with url '{s}' should be updated in {filename}: replace '{s}' by '"
+                        + lp["by"]["url"]
+                        + "'"
+                    )
                 to_replace[s] = lp["by"]["url"]
                 modified = True
     for s in to_drop:
