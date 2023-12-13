@@ -21,6 +21,7 @@
 #    from mapstore.gs_stored_data where id in (select id from mapstore.gs_resource where category_id='1');
 # todo: dashoards -> iterate widgets, find map where widgetType == map
 
+import argparse
 import sys
 import json
 import psycopg2
@@ -212,7 +213,7 @@ def check_db_storeddata():
             catalogs, f"db map with id {rid} and name {name}"
         )
         if map_modified or catalogs_modified:
-            if dryrun:
+            if args.dryrun:
                 print(f"map {rid} needs update but not changing anything, dry-run mode")
             else:
                 try:
@@ -262,7 +263,7 @@ def check_db_storeddata():
             catalogs, f"db context with id {rid} and name {name}"
         )
         if map_modified or catalogs_modified:
-            if dryrun:
+            if args.dryrun:
                 print(
                     f"context {rid} needs update but not changing anything, dry-run mode"
                 )
@@ -296,10 +297,12 @@ def check_db_storeddata():
 
 
 # main
-dryrun = False
-if len(sys.argv) > 1 and sys.argv[1] == "-d":
-    dryrun = True
 
+parser = argparse.ArgumentParser(
+    description="Process mapstore configs, maps & contexts."
+)
+parser.add_argument("-d", "--dry-run", action="store_true", help="dry-run mode")
+args = parser.parse_args()
 config = read_config()
 check_localConfig()
 for filetype in ["new", "config"]:
