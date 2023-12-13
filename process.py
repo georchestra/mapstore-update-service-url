@@ -251,6 +251,12 @@ def check_db_storeddata():
                             "rid": rid,
                         },
                     )
+                    curs.execute(
+                        "UPDATE mapstore.gs_resource SET lastupdate=now() AT TIME ZONE 'utc' WHERE id=%(rid)s",
+                        {
+                            "rid": rid,
+                        },
+                    )
                     db.commit()
                 except psycopg2.Error as e:
                     print(f"failed updating map {rid} ! {e}")
@@ -288,6 +294,12 @@ def check_db_storeddata():
                         "UPDATE mapstore.gs_stored_data SET stored_data=%(jsonstr)s WHERE id=%(rid)s",
                         {
                             "jsonstr": json.dumps(mapconfig, separators=(",", ":")),
+                            "rid": rid,
+                        },
+                    )
+                    curs.execute(
+                        "UPDATE mapstore.gs_resource SET lastupdate=now() AT TIME ZONE 'utc' WHERE id=%(rid)s",
+                        {
                             "rid": rid,
                         },
                     )
