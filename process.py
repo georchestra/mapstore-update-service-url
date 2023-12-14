@@ -140,6 +140,8 @@ def check_layers(layers, filename, canupdate):
                         + "'"
                     )
                 l["url"] = lp["by"]["url"]
+                if "capabilitiesURL" in l and l["capabilitiesURL"] != lp["by"]["url"]:
+                    l["capabilitiesURL"] = lp["by"]["url"]
                 modified = True
     for l in to_drop:
         layers.remove(l)
