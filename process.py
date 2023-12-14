@@ -126,6 +126,8 @@ def check_layers(layers, filename, canupdate):
                 to_drop.append(l)
                 modified = True
             elif lp["action"] == "replace":
+                if "layername" in lp and lp["layername"] != l["name"]:
+                    continue
                 if args.dryrun or not canupdate:
                     print(
                         f"layer with url {lu} should be updated in {filename}: "

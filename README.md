@@ -34,6 +34,15 @@ the following operations are available:
     "url" : "https://data.geopf.fr/wmts"
   }
 }
+- replace the url for a specific layer coming from a given service url, specifying its name
+```
+"https://wxs.ign.fr/parcellaire/geoportail/r/wms" : {
+  "action" : "replace",
+  "layername": "CADASTRALPARCELS.PARCELLAIRE_EXPRESS",
+  "by" : {
+    "url" : "https://data.geopf.fr/wms-r/wms"
+  }
+}
 ```
 - drop all layers coming from a given service url
 ```
