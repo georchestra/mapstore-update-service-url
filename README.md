@@ -34,6 +34,7 @@ the following operations are available:
     "url" : "https://data.geopf.fr/wmts"
   }
 }
+```
 - replace the url for a specific layer coming from a given service url, specifying its name
 ```
 "https://wxs.ign.fr/parcellaire/geoportail/r/wms" : {
@@ -55,6 +56,7 @@ the following operations are available:
   "layername" : "ludi_2266__joincache_pyramide_2"
 }
 ```
+
 ## configuration
 
 the script needs a list of service definitions mappings, from a previous url to
