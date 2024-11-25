@@ -272,6 +272,9 @@ def check_db_storeddata():
         except TypeError:
             print(f"context {rid} ({name}) has no content ?")
             continue
+        if 'map' not in mapconfig["mapConfig"]:
+            print(f"context {rid} ({name}) has no map ? skipping")
+            continue
         map_modified = check_map(
             mapconfig["mapConfig"], f"db context with id {rid} and name {name}", True
         )
